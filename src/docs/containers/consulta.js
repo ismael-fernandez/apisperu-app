@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
-import AwesomeAlert from 'react-native-awesome-alerts';
-
-
 import Layout from '../components/formLayout'
 import RadioButton from '../../sections/components/radiobutton'
 import Inputform from '../../sections/components/inputForm'
 import Title from '../../screens/components/title'
 import Container from '../../sections/containers/container'
 import Button from '../../sections/components/button'
-import Message from '../../sections/components/message'
 import API from '../../../utils/api'
 
 import { View, Text, Alert } from 'react-native'
+import Loading from '../../sections/components/loading'
+//import {Banner} from '../../sections/components/admob'
+
+
+import { connect } from 'react-redux'
 
 class Consulta extends Component {
     state = {
@@ -19,8 +20,7 @@ class Consulta extends Component {
         value: '',
         type: 1,
         length: 8,
-        show: false,
-        result: [],
+        loading: false,
     }
     selectDoc = (e) => {
         this.setState({
@@ -31,31 +31,44 @@ class Consulta extends Component {
     onChange = (value) => {
         this.setState({ value: value.replace(/[^0-9]/g, '') })
     }
+    componentWillMount = () => {
+        this.setState({ loading: false })
+    }
     onSubmit = async () => {
+        this.setState({ loading: true })
         if (!this.valid()) {
             return null
         }
         const data = await API.getDatos(this.state.type, this.state.value)
         if (data === null) {
             this.error("No se encontro resultados")
+            this.setState({ loading: false })
             return null
         }
-        this.setState({ result: data })
-        
+        this.props.dispatch({
+            type: 'DOCS_LIST',
+            payload: {
+                docslist: data
+            }
+        })
+        this.setState({ loading: false })
     }
     valid = () => {
         if (this.state.value.trim() === '') {
+            this.setState({ loading: false })
             this.error("Ingrese el numero")
             return false
         }
         if (this.state.type === 1) {
             if (this.state.value.length != 8) {
+                this.setState({ loading: false })
                 this.error("El digito del Documento debe ser 8")
                 return false
             }
         }
         if (this.state.type === 2) {
             if (this.state.value.length != 11) {
+                this.setState({ loading: false })
                 this.error("El digito del RUC debe ser 11")
                 return false
             }
@@ -76,11 +89,17 @@ class Consulta extends Component {
             ],
         );
     }
+
     render() {
+        if (this.state.loading) {
+            return (
+                <Loading />
+            )
+        }
         return (
             <Layout flex>
-                <Title title="Apis Peru" gradient height={200} />
-                <Container round={20} py={60} px={40} traslate={60}>
+                <Title title="Apis Peru" gradient height={180} onClose={this.close} />
+                <Container round={30} py={40} px={40} traslate={50}>
 
                     <RadioButton
                         checked={this.state.type}
@@ -96,12 +115,12 @@ class Consulta extends Component {
                         title="consultar"
                         raised
                         onPress={this.onSubmit}
-                    />
-                    {this.state.alert && <Message />}
+                    />                    
+                    
                 </Container>
             </Layout>
         );
     }
 }
 
-export default Consulta;
+export default connect()(Consulta);

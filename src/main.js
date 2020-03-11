@@ -1,35 +1,27 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
 
-import {
-    View,
-    Text,
-} from 'react-native';
-import { Button, ThemeProvider, Input } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Home from './src/screens/containers/home'
-class App extends Component {
+import Home from '../src/screens/containers/home'
+import FormConsult from '../src/docs/containers/consulta'
+import Document from './docs/containers/docsList'
+
+class Main extends Component {
     render() {
+        if (this.props.docslist){
+            return <Document />
+        }
         return (
-            <Home>
-                <ThemeProvider>
-                    <Input
-                        placeholder='INPUT WITH CUSTOM ICON'
-                        leftIcon={
-                            <Icon
-                                name='user'
-                                size={24}
-                                color='black'
-                            />
-                        }
-                    />
-                    <Button
-                        title="Loading button"
-                        loading
-                    />
-                </ThemeProvider>
+            <Home>                
+                <FormConsult />
             </Home>
         );
     }
 }
 
-export default App;
+function mapStateToProps(state) {
+    return {
+        docslist: state.docslist
+    }
+}
+
+export default connect(mapStateToProps)(Main);

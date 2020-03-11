@@ -1,30 +1,40 @@
 import React, { Component } from 'react';
-import { FlatList, View, Text } from 'react-native';
+
 import Empty from '../components/empty';
 import { ListItem } from 'react-native-elements'
+import { List } from 'react-native-paper';
 
-class DocumentList extends Component {
-    RendeEmpty = () => <Empty text="The list is empty :(" />
-    itemSeparator = () => "--"
-    ViewMovie = (item) => {
-        
-    }
-    renderItem = ({ item }) => {
-        console.log(item)
-    }
-    keyExtractor = item => item.key.toString()
-    render() {
-        return (            
-            this.props.list.map((l, i) => (
-                <ListItem
-                    key={i}
-                    title={l.name}
-                    subtitle={l.value}
-                    bottomDivider
-                />
-            ))
-        );
+import { connect } from 'react-redux'
+import { StyleSheet, ScrollView  } from 'react-native';
+
+function mapSateteToProps(state) {
+    return {
+        list: state.docslist
     }
 }
 
-export default DocumentList;
+class DocumentList extends Component {
+    RendeEmpty = () => <Empty text="The list is empty :(" />
+    keyExtractor = item => item.key.toString()
+    render() {
+        return (
+            <ScrollView style={styles.scroll}>
+                {this.props.list.map((l, i) => (
+                    <List.Item
+                        key={i}
+                        title={l.name + ":"}
+                        description={l.value ? l.value : '-'}
+                        descriptionNumberOfLines={5}
+                    />
+                ))}
+            </ScrollView >
+        );
+    }
+}
+const styles= StyleSheet.create({
+    scroll:{
+        width:'100%',
+    }
+})
+
+export default connect(mapSateteToProps)(DocumentList);

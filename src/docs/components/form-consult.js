@@ -7,6 +7,8 @@ import {
 import { Button, ThemeProvider, Overlay } from 'react-native-elements';
 import { RadioButton, TextInput, TextInputMask } from 'react-native-paper';
 
+import CustomInput from '../../sections/components/inputForm'
+
 class FormConsult extends Component {
     state = {
         label: 'Ingrese numero DNI',
@@ -14,7 +16,7 @@ class FormConsult extends Component {
         checked: 1,
     }
     handleClick = (value) => {
-        if(this.state.value.length<=8){
+        if (this.state.value.length <= 8) {
             return null;
         }
         this.setState({
@@ -44,9 +46,12 @@ class FormConsult extends Component {
                     <TextInput
                         label="Ingrese numero"
                         keyboardType="number-pad"
-                        value={this.state.text}                        
+                        value={this.state.text}
                         onChangeText={text => this.handleChangeInput(text)}
                     />
+                </View>
+                <View style={styles.inputContainer}>
+                    <CustomInput title="custom"/>
                 </View>
                 <View>
                     <Button

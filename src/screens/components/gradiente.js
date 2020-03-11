@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 import Gradient from "react-native-linear-gradient";
 
 function Gradiente(props) {
-    const colors = props.color ? props.color : ['#A1A3FF', '#6D63EF'];
+    const colors = props.color ? props.color : ['#0652DD', '#0984e3'];
     
     const styles = StyleSheet.create({
         content: {

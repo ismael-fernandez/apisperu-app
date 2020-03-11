@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import { Button } from 'react-native-elements';
 
 function CustomButton(props) {
-    const color = { backgroundColor: props.color ? props.color :'#6c5ce7'}
+    const color = { backgroundColor: props.color ? props.color :'#4b7bec'}
     return (
         <View style={styles.container}>
             <Button

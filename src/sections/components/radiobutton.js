@@ -7,11 +7,13 @@ import {
 import { RadioButton, TextInput, TextInputMask } from 'react-native-paper';
 
 function RadioBtn(props) {
-    return(
+    return (
         <View style={styles.header}>
             <RadioButton.Group
+                style={styles.radio}
                 value={props.checked}
                 onValueChange={value => props.onPress(value)}
+                color="red"
             >
                 <RadioButton.Item label="DNI" value={1} />
                 <RadioButton.Item label="RUC" value={2} />
@@ -25,6 +27,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         textAlign: 'center',
         justifyContent: 'center',
+        padding: 0,
+        margin:0,
     },
+    radio:{
+        padding:0,
+        margin:0,
+    }
 })
 export default RadioBtn;
